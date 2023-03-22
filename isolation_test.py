@@ -80,8 +80,8 @@ def run_connector_test():
     unlock_code = isolate_endpoint(connector_guid)
     print("[+] Getting connector trajectory")
     get_connector_trajectory(connector_guid)
-    print("[+] Waiting 60 seconds before removing isolation")
-    time.sleep(5)  
+    print("[+] Waiting 30 seconds before removing isolation")
+    time.sleep(30)  
     print("[+] Removing endpoint from isolation")
     remove_isolation(connector_guid, unlock_code)
 
