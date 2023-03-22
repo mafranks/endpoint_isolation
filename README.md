@@ -1,4 +1,4 @@
-# endpoint_isolation
+# Endpoint Isolation Test
 
 This is a test file to show the abilities of isolating a Secure Endpoint connector using the API.
 
