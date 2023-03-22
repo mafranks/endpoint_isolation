@@ -44,13 +44,13 @@ def isolate_endpoint(connector_guid):
         # Convert response to JSON
         isolate_response_json = json.loads(isolate_response.content)
         unlock_code = isolate_response_json['data']['unlock_code']
-        print("Endpoint successfully isolated")
+        print("[+] Endpoint successfully isolated")
         return unlock_code
     elif isolate_response.status_code == 409:
-        print("Endpoint is already isolated")
+        print("[-] Endpoint is already isolated")
         return ""
     else:
-        print("Error isolating endpoint")
+        print("[-] Error isolating endpoint")
         return ""
 
 def remove_isolation(connector_guid, unlock_code):
@@ -60,18 +60,17 @@ def remove_isolation(connector_guid, unlock_code):
     # Remove the isolation
     remove_isolation_response = requests.delete(isolation_url, auth=auth, data={"unlock_code": unlock_code})
     if remove_isolation_response.status_code == 200:
-        # Convert response to JSON
-        remove_isolation_response_json = json.loads(remove_isolation_response.content)
-        print("Endpoint is no longer isolated")
+        print("[+] Endpoint is no longer isolated")
     elif remove_isolation_response.status_code == 409:
-        print("Endpoint is not isolated")
+        print("[-] Endpoint is not isolated")
     else:
-        print("Error removing isolation from endpoint")
+        print("[-] Error removing endpoint from isolation")
 
 def get_connector_trajectory(connector_guid):
     traj_url = f"{base_url}/computers/{connector_guid}/user_trajectory"
     traj_response = requests.get(traj_url, auth=auth, data={"hostname": HOSTNAME})
-    print(json.loads(traj_response.content))
+    print("[+] Connector trajectory pulled. Uncomment print line in script to view on the next run.")
+    # print(json.loads(traj_response.content))
 
 def run_connector_test():  
     print("[+] Running connector test")
@@ -82,10 +81,13 @@ def run_connector_test():
     print("[+] Getting connector trajectory")
     get_connector_trajectory(connector_guid)
     print("[+] Waiting 60 seconds before removing isolation")
-    time.sleep(60)  
+    time.sleep(5)  
     print("[+] Removing endpoint from isolation")
     remove_isolation(connector_guid, unlock_code)
 
     # You can also check the isolation status of an endpoint
     # status_url = f"{base_url}/computers/{connector_guid}/isolation"
     # status_response = requests.get(status_url, auth=auth)
+
+if __name__ == "__main__":
+    run_connector_test()
